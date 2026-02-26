@@ -1,0 +1,113 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-5">
+    <div>
+        <h2 class="hero-title mb-1">Admin Dashboard</h2>
+        <p class="text-secondary m-0">Manage students and certificates.</p>
+    </div>
+    <div class="d-flex gap-3">
+        <a href="{{ url_for('admin_logout') }}" class="btn btn-outline-danger">Logout</a>
+        <a href="{{ url_for('add_student') }}" class="btn btn-primary">Add New Student</a>
+        <a href="{{ url_for('issue_certificate') }}" class="btn btn-warning">Issue Certificate</a>
+    </div>
+</div>
+
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="glass-card overflow-hidden p-0">
+            <div class="p-4 border-bottom border-light">
+                <h4 class="m-0 fw-bold">Issued Certificates</h4>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-dark table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">Verification ID</th>
+                            <th>Student</th>
+                            <th>College</th>
+                            <th>Course</th>
+                            <th>Issue Date</th>
+                            <th>Status</th>
+                            <th class="pe-4 text-end">Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for cert in certificates %}
+                        {% set student = students | selectattr("student_id", "equalto", cert.student_id) | first %}
+                        <tr>
+                            <td class="ps-4"><code>{{ cert.unique_verification_id }}</code></td>
+                            <td>{{ student.name }}</td>
+                            <td>{{ student.college }}</td>
+                            <td>{{ student.course }}</td>
+                            <td>{{ cert.issue_date }}</td>
+                            <td>
+                                <span
+                                    class="status-badge {% if cert.status == 'Active' %}badge-active{% else %}badge-revoked{% endif %}">
+                                    {{ cert.status }}
+                                </span>
+                            </td>
+                            <td class="pe-4 text-end">
+                                <a href="/download/{{ cert.unique_verification_id }}"
+                                    class="btn btn-sm btn-outline-info me-2">PDF</a>
+                                {% if cert.status == 'Active' %}
+                                <a href="{{ url_for('revoke_certificate', cert_id=cert.certificate_id) }}"
+                                    class="btn btn-sm btn-outline-danger"
+                                    onclick="return confirm('Are you sure you want to revoke this certificate?')">Revoke</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                        {% if not certificates %}
+                        <tr>
+                            <td colspan="6" class="text-center py-5 text-secondary">No certificates issued yet.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="row mt-5">
+    <div class="col-12">
+        <div class="glass-card overflow-hidden p-0">
+            <div class="p-4 border-bottom border-light">
+                <h4 class="m-0 fw-bold">Enrolled Students</h4>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-dark table-hover mb-0">
+                    <thead class="table-light">
+                        <tr>
+                            <th class="ps-4">ID</th>
+                            <th>Name</th>
+                            <th>College</th>
+                            <th>Email</th>
+                            <th>Course</th>
+                            <th class="pe-4">Year</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for student in students %}
+                        <tr>
+                            <td class="ps-4">{{ student.student_id }}</td>
+                            <td>{{ student.name }}</td>
+                            <td>{{ student.college }}</td>
+                            <td>{{ student.email }}</td>
+                            <td>{{ student.course }}</td>
+                            <td class="pe-4">{{ student.year }}</td>
+                        </tr>
+                        {% endfor %}
+                        {% if not students %}
+                        <tr>
+                            <td colspan="6" class="text-center py-5 text-secondary">No students added yet.</td>
+                        </tr>
+                        {% endif %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

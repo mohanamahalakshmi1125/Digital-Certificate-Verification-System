@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="hero-section">
+    <h1 class="hero-title mb-4">Verify Excellence</h1>
+    <p class="lead mb-5 opacity-75">Secure, instant, and reliable digital certificate verification system.</p>
+
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <div class="glass-card shadow-lg p-5">
+                <form action="/verify" method="POST">
+                    <div class="mb-4 text-start">
+                        <label for="verification_id" class="form-label fw-bold">Certificate Verification ID</label>
+                        <input type="text" class="form-control form-control-lg" id="verification_id"
+                            name="verification_id" placeholder="e.g. CERT2026-XXXXXX" required>
+                    </div>
+                    <div class="d-grid">
+                        <button type="submit" class="btn btn-primary btn-lg py-3 fw-bold">Verify Now</button>
+                    </div>
+                </form>
+                <div class="mt-4 opacity-50 fst-italic">
+                    <small>Enter the unique ID found on your certificate or scan the QR code.</small>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

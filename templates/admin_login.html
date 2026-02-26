@@ -1,0 +1,28 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-4">
+        <div class="glass-card text-center">
+            <h2 class="hero-title mb-4">Admin Login</h2>
+            <form action="{{ url_for('admin_login') }}" method="POST">
+                <div class="mb-3 text-start">
+                    <label for="username" class="form-label">Username</label>
+                    <input type="text" class="form-control" id="username" name="username" value="admin" required>
+                </div>
+                <div class="mb-4 text-start">
+                    <label for="password" class="form-label">Password</label>
+                    <input type="password" class="form-control" id="password" name="password"
+                        placeholder="Hint: admin123" required>
+                </div>
+                <div class="d-grid">
+                    <button type="submit" class="btn btn-primary py-2 fw-bold">Login to Dashboard</button>
+                </div>
+            </form>
+            <div class="mt-4 opacity-50">
+                <small>Default credentials: <code>admin</code> / <code>admin123</code></small>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

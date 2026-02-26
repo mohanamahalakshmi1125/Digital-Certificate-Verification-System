@@ -1,0 +1,80 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="glass-card">
+                {% if error %}
+                <div class="text-center py-5">
+                    <div class="mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor"
+                            class="text-danger" viewBox="0 0 16 16">
+                            <path d="M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z" />
+                            <path
+                                d="M7.002 11a1 1 0 1 1 2 0 1 1 0 0 1-2 0zM7.1 4.995a.905.905 0 1 1 1.8 0l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 4.995z" />
+                        </svg>
+                    </div>
+                    <h2 class="hero-title text-danger mb-3">Verification Failed</h2>
+                    <p class="lead mb-4">{{ error }}</p>
+                    <a href="/" class="btn btn-primary">Try Again</a>
+                </div>
+                {% else %}
+                <div class="text-center mb-5">
+                    <div class="mb-4">
+                        <svg xmlns="http://www.w3.org/2000/svg" width="80" height="80" fill="currentColor"
+                            class="text-success" viewBox="0 0 16 16">
+                            <path
+                                d="M16 8A8 8 0 1 1 0 8a8 8 0 0 1 16 0zm-3.97-3.03a.75.75 0 0 0-1.08.022L7.477 9.417 5.384 7.323a.75.75 0 0 0-1.06 1.06L6.97 11.03a.75.75 0 0 0 1.079-.02l3.992-4.99a.75.75 0 0 0-.01-1.05z" />
+                        </svg>
+                    </div>
+                    <h2 class="hero-title text-success mb-3">Certificate Verified</h2>
+                    <span
+                        class="status-badge {% if certificate.status == 'Active' %}badge-active{% else %}badge-revoked{% endif %} fs-5">
+                        {{ certificate.status }}
+                    </span>
+                </div>
+
+                <div class="row g-4">
+                    <div class="col-md-6 border-end border-secondary">
+                        <div class="mb-4">
+                            <label class="text-secondary small text-uppercase">Student Name</label>
+                            <div class="fs-4 fw-bold">{{ student.name }}</div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="text-secondary small text-uppercase">College</label>
+                            <div class="fs-5">{{ student.college }}</div>
+                        </div>
+                        <div class="mb-4">
+                            <label class="text-secondary small text-uppercase">Course</label>
+                            <div class="fs-5">{{ student.course }}</div>
+                        </div>
+                        <div class="mb-0">
+                            <label class="text-secondary small text-uppercase">Issue Date</label>
+                            <div class="fs-6">{{ certificate.issue_date }}</div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 text-center text-md-end">
+                        <div class="mb-4">
+                            <label class="text-secondary small text-uppercase d-block mb-2">QR Authentication</label>
+                            <img src="/{{ certificate.qr_code_path }}" alt="QR Code" class="img-fluid rounded-3"
+                                style="max-width: 150px; background: white; padding: 10px;">
+                        </div>
+                        <div class="mb-0">
+                            <label class="text-secondary small text-uppercase d-block mb-2">Unique ID</label>
+                            <code class="fs-5 text-primary">{{ certificate.unique_verification_id }}</code>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="mt-5 pt-4 border-top border-secondary text-center">
+                    <a href="/download/{{ certificate.unique_verification_id }}" class="btn btn-warning me-3">Download
+                        PDF</a>
+                    <a href="/" class="btn btn-outline-light">Back to Search</a>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
